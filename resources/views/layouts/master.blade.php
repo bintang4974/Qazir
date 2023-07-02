@@ -86,7 +86,7 @@
         $.widget.bridge('uibutton', $.ui.button)
     </script>
     <!-- jQuery -->
-    <script src="{{ asset('template/../../plugins/jquery/jquery.min.js') }}"></script>
+    <script src="{{ asset('template/plugins/jquery/jquery.min.js') }}"></script>
     <!-- Bootstrap 4 -->
     <script src="{{ asset('template/plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
     <!-- ChartJS -->
@@ -126,8 +126,10 @@
     <script src="{{ asset('template/plugins/datatables-buttons/js/buttons.html5.min.js') }}"></script>
     <script src="{{ asset('template/plugins/datatables-buttons/js/buttons.print.min.js') }}"></script>
     <script src="{{ asset('template/plugins/datatables-buttons/js/buttons.colVis.min.js') }}"></script>
+    <!-- Validator -->
+    <script src="{{asset('template/plugins/validator.min.js')}}"></script>
     <!-- Page specific script -->
-    <script>
+    {{-- <script>
         $(function() {
             $("#example1").DataTable({
                 "responsive": true,
@@ -145,7 +147,10 @@
                 "responsive": true,
             });
         });
-    </script>
+    </script> --}}
+
+
+    @stack('scripts')
 </body>
 
 </html>
