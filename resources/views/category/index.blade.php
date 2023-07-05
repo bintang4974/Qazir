@@ -96,5 +96,36 @@
             $('#modal-form [name=name]').focus();
 
         }
+
+        function editForm(url) {
+            $('#modal-form').modal('show');
+            $('#modal-form .modal-title').text('Edit Category');
+
+            $('#modal-form form')[0].reset();
+            $('#modal-form form').attr('action', url);
+            $('#modal-form [name=_method]').val('put');
+            $('#modal-form [name=name]').focus();
+
+            $.get(url).done((res) => {
+                $('#modal-form [name=name]').val(res.name);
+            }).fail((err) => {
+                alert('Cant show data!');
+                return;
+            })
+        }
+
+        function deleteData(url) {
+            if (confirm('Sure delete this data?')) {
+                $.post(url, {
+                    '_token': $('[name=csrf-token]').attr('content'),
+                    '_method': 'delete'
+                }).done((res) => {
+                    table.ajax.reload()
+                }).fail((err) => {
+                    alert('Cant delete data!');
+                    return;
+                })
+            }
+        }
     </script>
 @endpush

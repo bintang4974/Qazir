@@ -24,8 +24,8 @@ class CategoryController extends Controller
             ->addIndexColumn()
             ->addColumn('action', function ($category) {
                 return '
-                <button class="btn btn-warning btn-sm"><i class="fas fa-edit"></i></button>
-                <button class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button>
+                <button onclick="editForm(`' . route('category.update', $category->id) . '`)" class="btn btn-warning btn-sm"><i class="fas fa-edit"></i></button>
+                <button onclick="deleteData(`' . route('category.destroy', $category->id) . '`)" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button>
                 ';
             })
             ->rawColumns(['action'])
@@ -57,7 +57,9 @@ class CategoryController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $category = Category::find($id);
+
+        return response()->json($category);
     }
 
     /**
@@ -73,7 +75,11 @@ class CategoryController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $category = Category::find($id);
+        $category->name = $request->name;
+        $category->update();
+
+        return response()->json('Data Create Successfully!', 200);
     }
 
     /**
@@ -81,6 +87,9 @@ class CategoryController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $category = Category::find($id);
+        $category->delete();
+
+        return response(null, 204);
     }
 }

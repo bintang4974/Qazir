@@ -5,6 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{{ config('app.name') }} | @yield('title')</title>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet"
@@ -127,7 +128,7 @@
     <script src="{{ asset('template/plugins/datatables-buttons/js/buttons.print.min.js') }}"></script>
     <script src="{{ asset('template/plugins/datatables-buttons/js/buttons.colVis.min.js') }}"></script>
     <!-- Validator -->
-    <script src="{{asset('template/plugins/validator.min.js')}}"></script>
+    <script src="{{ asset('template/plugins/validator.min.js') }}"></script>
     <!-- Page specific script -->
     {{-- <script>
         $(function() {
