@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use PDF;
 
 class ProductController extends Controller
 {
@@ -118,5 +119,19 @@ class ProductController extends Controller
         }
 
         return response(null, 204);
+    }
+
+    public function printBarcode(Request $request)
+    {
+        $dataProduct = array();
+        foreach ($request->id as $id) {
+            $product = Product::find($id);
+            $dataProduct[] = $product;
+        }
+
+        $no = 1;
+        $pdf = PDF::loadView('product.barcode', compact('dataProduct', 'no'));
+        $pdf->setPaper('a4', 'potrait');
+        return $pdf->stream('product.pdf');
     }
 }

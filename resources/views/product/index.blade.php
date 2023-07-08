@@ -16,10 +16,12 @@
                         class="fas fa-plus"></i> Tambah</button>
                 <button onclick="deleteSelected('{{ route('product.delete_selected') }}')" class="btn btn-danger btn-sm"><i
                         class="fas fa-trash"></i> Delete</button>
+                <button onclick="printBarcode('{{ route('product.print_barcode') }}')" class="btn btn-info btn-sm"><i
+                        class="fas fa-barcode"></i> Barcode</button>
             </div>
             <!-- /.card-header -->
             <div class="card-body">
-                <form action="" class="form-product">
+                <form action="" method="post" class="form-product">
                     @csrf
                     <table class="table table-bordered table-striped">
                         <thead>
@@ -188,6 +190,18 @@
             } else {
                 alert('select the data to be deleted!');
                 return
+            }
+        }
+
+        function printBarcode(url) {
+            if ($('input:checked').length < 1) {
+                alert('select the data to be printed!');
+                return
+            } else if (($('input:checked').length < 3)) {
+                alert('select minimun 3 data!');
+                return
+            } else {
+                $('.form-product').attr('action', url).attr('target', '_blank').submit()
             }
         }
     </script>
