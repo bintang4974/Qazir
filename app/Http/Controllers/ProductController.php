@@ -25,16 +25,19 @@ class ProductController extends Controller
         return datatables()
             ->of($product)
             ->addIndexColumn()
-            ->addColumn('code', function($product){
-                return '<span class="badge badge-secondary">'.$product->code.'</span>';
+            ->addColumn('select_all', function ($product) {
+                return '<input type="checkbox" name="id[]" value="' . $product->id . '">';
             })
-            ->addColumn('category', function($product){
+            ->addColumn('code', function ($product) {
+                return '<span class="badge badge-secondary">' . $product->code . '</span>';
+            })
+            ->addColumn('category', function ($product) {
                 return $product->category->name;
             })
-            ->addColumn('purchase_price', function($product){
+            ->addColumn('purchase_price', function ($product) {
                 return format_uang($product->purchase_price);
             })
-            ->addColumn('selling_price', function($product){
+            ->addColumn('selling_price', function ($product) {
                 return format_uang($product->selling_price);
             })
             ->addColumn('action', function ($product) {
@@ -43,7 +46,7 @@ class ProductController extends Controller
                 <button onclick="deleteData(`' . route('product.destroy', $product->id) . '`)" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button>
                 ';
             })
-            ->rawColumns(['action', 'code'])
+            ->rawColumns(['action', 'code', 'select_all'])
             ->make(true);
     }
 
@@ -91,7 +94,7 @@ class ProductController extends Controller
     public function update(Request $request, string $id)
     {
         $product = Product::find($id) ?? new Product();
-        $request['code'] = 'A' . add_leading_zero((int)$product->id + 1, 6);
+        // $request['code'] = 'A' . add_leading_zero((int)$product->id + 1, 6);
         $product->update($request->all());
 
         return response()->json('Data Create Successfully!', 200);
@@ -104,6 +107,15 @@ class ProductController extends Controller
     {
         $product = Product::find($id);
         $product->delete();
+
+        return response(null, 204);
+    }
+
+    public function deleteSelected(Request $request)
+    {
+        foreach ($request->id as $id) {
+            Product::find($id)->delete();
+        }
 
         return response(null, 204);
     }

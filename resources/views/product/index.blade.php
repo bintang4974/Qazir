@@ -14,28 +14,31 @@
             <div class="card-header">
                 <button onclick="addForm('{{ route('product.store') }}')" class="btn btn-primary btn-sm"><i
                         class="fas fa-plus"></i> Tambah</button>
+                <button onclick="deleteSelected('{{ route('product.delete_selected') }}')" class="btn btn-danger btn-sm"><i
+                        class="fas fa-trash"></i> Delete</button>
             </div>
             <!-- /.card-header -->
             <div class="card-body">
-                <table class="table table-bordered table-striped">
-                    <thead>
-                        <tr>
-                            <th width="5%">No</th>
-                            <th>Code</th>
-                            <th>Name</th>
-                            <th>Category</th>
-                            <th>Brand</th>
-                            <th>Purchase Price</th>
-                            <th>Selling Price</th>
-                            <th>Discount</th>
-                            <th>Stock</th>
-                            <th><i class="fas fa-cog"></i></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-
-                    </tbody>
-                </table>
+                <form action="" class="form-product">
+                    @csrf
+                    <table class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th><input type="checkbox" name="select_all" id="select_all"></th>
+                                <th width="5%">No</th>
+                                <th>Code</th>
+                                <th>Name</th>
+                                <th>Category</th>
+                                <th>Brand</th>
+                                <th>Purchase Price</th>
+                                <th>Selling Price</th>
+                                <th>Discount</th>
+                                <th>Stock</th>
+                                <th><i class="fas fa-cog"></i></th>
+                            </tr>
+                        </thead>
+                    </table>
+                </form>
             </div>
             <!-- /.card-body -->
         </div>
@@ -61,6 +64,9 @@
                     url: '{{ route('product.data') }}'
                 },
                 columns: [{
+                        data: 'select_all'
+                    },
+                    {
                         data: 'DT_RowIndex',
                         searchable: false,
                         sortable: false
@@ -113,6 +119,10 @@
                     })
                 }
             })
+
+            $('[name=select_all]').on('click', function() {
+                $(':checkbox').prop('checked', this.checked);
+            })
         })
 
         function addForm(url) {
@@ -160,6 +170,24 @@
                     alert('Cant delete data!');
                     return;
                 })
+            }
+        }
+
+        function deleteSelected(url) {
+            if ($('input:checked').length > 1) {
+                if (confirm('Sure delete this data?')) {
+                    $.post(url, $('.form-product').serialize())
+                        .done((res) => {
+                            table.ajax.reload()
+                        })
+                        .fail((err) => {
+                            alert('Cant delete data!')
+                            return
+                        })
+                }
+            } else {
+                alert('select the data to be deleted!');
+                return
             }
         }
     </script>
