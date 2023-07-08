@@ -95,7 +95,6 @@ class ProductController extends Controller
     public function update(Request $request, string $id)
     {
         $product = Product::find($id) ?? new Product();
-        // $request['code'] = 'A' . add_leading_zero((int)$product->id + 1, 6);
         $product->update($request->all());
 
         return response()->json('Data Create Successfully!', 200);
