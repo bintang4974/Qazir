@@ -1,21 +1,19 @@
 @extends('layouts.master')
 @section('title')
-    Member
+    Supplier
 @endsection
 
 @section('breadcrumb')
     @parent
-    <li class="breadcrumb-item active">Member</li>
+    <li class="breadcrumb-item active">Supplier</li>
 @endsection
 
 @section('content')
     <div class="container-fluid">
         <div class="card">
             <div class="card-header">
-                <button onclick="addForm('{{ route('member.store') }}')" class="btn btn-primary btn-sm"><i
+                <button onclick="addForm('{{ route('supplier.store') }}')" class="btn btn-primary btn-sm"><i
                         class="fas fa-plus"></i> Tambah</button>
-                <button onclick="addForm()" class="btn btn-success btn-sm"><i
-                        class="fas fa-id-card"></i> Card Member</button>
             </div>
             <!-- /.card-header -->
             <div class="card-body">
@@ -23,10 +21,9 @@
                     <thead>
                         <tr>
                             <th width="5%">No</th>
-                            <th>Code</th>
-                            <th>Name</th>
-                            <th>Address</th>
-                            <th>Telephone</th>
+                            <th>name</th>
+                            <th>address</th>
+                            <th>telephone</th>
                             <th><i class="fas fa-cog"></i></th>
                         </tr>
                     </thead>
@@ -42,7 +39,7 @@
     </div><!-- /.container-fluid -->
 @endsection
 
-@includeIf('member.form')
+@includeIf('supplier.form')
 
 @push('scripts')
     <script>
@@ -56,15 +53,12 @@
                 autoWidth: false,
                 // buttons: ["copy", "csv", "excel", "pdf", "print", "colvis"]
                 ajax: {
-                    url: '{{ route('member.data') }}'
+                    url: '{{ route('supplier.data') }}'
                 },
                 columns: [{
                         data: 'DT_RowIndex',
                         searchable: false,
                         sortable: false
-                    },
-                    {
-                        data: 'code'
                     },
                     {
                         data: 'name'
@@ -93,6 +87,7 @@
                         $('#modal-form').modal('hide');
                         table.ajax.reload();
                     }).fail((err) => {
+                        console.log('err: ', err);
                         alert('cant store data!');
                         return;
                     })
@@ -102,7 +97,7 @@
 
         function addForm(url) {
             $('#modal-form').modal('show');
-            $('#modal-form .modal-title').text('Add Member');
+            $('#modal-form .modal-title').text('Add Supplier');
 
             $('#modal-form form')[0].reset();
             $('#modal-form form').attr('action', url);
@@ -113,7 +108,7 @@
 
         function editForm(url) {
             $('#modal-form').modal('show');
-            $('#modal-form .modal-title').text('Edit Member');
+            $('#modal-form .modal-title').text('Edit Supplier');
 
             $('#modal-form form')[0].reset();
             $('#modal-form form').attr('action', url);
@@ -122,8 +117,6 @@
 
             $.get(url).done((res) => {
                 $('#modal-form [name=name]').val(res.name);
-                $('#modal-form [name=address]').val(res.address);
-                $('#modal-form [name=telephone]').val(res.telephone);
             }).fail((err) => {
                 alert('Cant show data!');
                 return;

@@ -3,6 +3,9 @@
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\MemberController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\PurchaseController;
+use App\Http\Controllers\PurchaseDetailController;
+use App\Http\Controllers\SupplierController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -42,4 +45,14 @@ Route::group(['middleware' => 'auth'], function(){
 
     Route::get('/member/data', [MemberController::class, 'data'])->name('member.data');
     Route::resource('member', MemberController::class);
+
+    Route::get('/supplier/data', [SupplierController::class, 'data'])->name('supplier.data');
+    Route::resource('supplier', SupplierController::class);
+
+    // Route::get('/supplier/data', [SupplierController::class, 'data'])->name('supplier.data');
+    Route::get('/purchase/{id}/create', [PurchaseController::class, 'create'])->name('purchase.create');
+    Route::resource('purchase', PurchaseController::class)->except('create');
+
+    Route::get('/purchase_detail/{id}/data', [PurchaseDetailController::class, 'data'])->name('purchase_detail.data');
+    Route::resource('purchase_detail', PurchaseDetailController::class)->except('create', 'show', 'edit');
 });

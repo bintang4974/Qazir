@@ -43,8 +43,8 @@ class ProductController extends Controller
             })
             ->addColumn('action', function ($product) {
                 return '
-                <button onclick="editForm(`' . route('product.update', $product->id) . '`)" class="btn btn-warning btn-sm"><i class="fas fa-edit"></i></button>
-                <button onclick="deleteData(`' . route('product.destroy', $product->id) . '`)" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button>
+                <button type="button" onclick="editForm(`' . route('product.update', $product->id) . '`)" class="btn btn-warning btn-sm"><i class="fas fa-edit"></i></button>
+                <button type="button" onclick="deleteData(`' . route('product.destroy', $product->id) . '`)" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button>
                 ';
             })
             ->rawColumns(['action', 'code', 'select_all'])

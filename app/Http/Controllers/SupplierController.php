@@ -2,30 +2,30 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Category;
+use App\Models\Supplier;
 use Illuminate\Http\Request;
 
-class CategoryController extends Controller
+class SupplierController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        return view('category.index');
+        return view('supplier.index');
     }
 
     public function data()
     {
-        $category = Category::orderBy('id', 'desc')->get();
+        $supplier = Supplier::orderBy('id', 'desc')->get();
 
         return datatables()
-            ->of($category)
+            ->of($supplier)
             ->addIndexColumn()
-            ->addColumn('action', function ($category) {
+            ->addColumn('action', function ($supplier) {
                 return '
-                <button type="button" onclick="editForm(`' . route('category.update', $category->id) . '`)" class="btn btn-warning btn-sm"><i class="fas fa-edit"></i></button>
-                <button type="button" onclick="deleteData(`' . route('category.destroy', $category->id) . '`)" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button>
+                <button type="button" onclick="editForm(`' . route('supplier.update', $supplier->id) . '`)" class="btn btn-warning btn-sm"><i class="fas fa-edit"></i></button>
+                <button type="button" onclick="deleteData(`' . route('supplier.destroy', $supplier->id) . '`)" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button>
                 ';
             })
             ->rawColumns(['action'])
@@ -45,9 +45,7 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        $category = new Category;
-        $category->name = $request->name;
-        $category->save();
+        Supplier::create($request->all());
 
         return response()->json('Data Create Successfully!', 200);
     }
@@ -57,9 +55,7 @@ class CategoryController extends Controller
      */
     public function show(string $id)
     {
-        $category = Category::find($id);
-
-        return response()->json($category);
+        //
     }
 
     /**
@@ -75,11 +71,7 @@ class CategoryController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $category = Category::find($id);
-        $category->name = $request->name;
-        $category->update();
-
-        return response()->json('Data Create Successfully!', 200);
+        //
     }
 
     /**
@@ -87,9 +79,6 @@ class CategoryController extends Controller
      */
     public function destroy(string $id)
     {
-        $category = Category::find($id);
-        $category->delete();
-
-        return response(null, 204);
+        //
     }
 }

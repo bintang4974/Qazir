@@ -27,8 +27,8 @@ class MemberController extends Controller
             })
             ->addColumn('action', function ($member) {
                 return '
-                <button onclick="editForm(`' . route('member.update', $member->id) . '`)" class="btn btn-warning btn-sm"><i class="fas fa-edit"></i></button>
-                <button onclick="deleteData(`' . route('member.destroy', $member->id) . '`)" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button>
+                <button type="button" onclick="editForm(`' . route('member.update', $member->id) . '`)" class="btn btn-warning btn-sm"><i class="fas fa-edit"></i></button>
+                <button type="button" onclick="deleteData(`' . route('member.destroy', $member->id) . '`)" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button>
                 ';
             })
             ->rawColumns(['action', 'code'])
