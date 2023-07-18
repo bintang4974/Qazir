@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\ExpenditureController;
 use App\Http\Controllers\MemberController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\PurchaseController;
@@ -34,7 +35,7 @@ Route::middleware([
 });
 
 
-Route::group(['middleware' => 'auth'], function(){
+Route::group(['middleware' => 'auth'], function () {
     Route::get('/category/data', [CategoryController::class, 'data'])->name('category.data');
     Route::resource('category', CategoryController::class);
 
@@ -48,6 +49,9 @@ Route::group(['middleware' => 'auth'], function(){
 
     Route::get('/supplier/data', [SupplierController::class, 'data'])->name('supplier.data');
     Route::resource('supplier', SupplierController::class);
+
+    Route::get('/expenditure/data', [ExpenditureController::class, 'data'])->name('expenditure.data');
+    Route::resource('expenditure', ExpenditureController::class);
 
     // Route::get('/supplier/data', [SupplierController::class, 'data'])->name('supplier.data');
     Route::get('/purchase/{id}/create', [PurchaseController::class, 'create'])->name('purchase.create');
