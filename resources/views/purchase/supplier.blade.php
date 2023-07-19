@@ -12,7 +12,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <table class="table table-striped table-bordered">
+                <table class="table table-striped table-bordered table-supplier">
                     <thead>
                         <tr>
                             <th>No</th>

@@ -20,7 +20,7 @@
             </div>
             <!-- /.card-header -->
             <div class="card-body">
-                <table class="table table-bordered table-striped">
+                <table class="table table-bordered table-striped table-purchase">
                     <thead>
                         <tr>
                             <th width="5%">No</th>
@@ -46,66 +46,91 @@
 @endsection
 
 @includeIf('purchase.supplier')
+@includeIf('purchase.detail')
 
 @push('scripts')
     <script>
-        let table;
+        let table, table1;
 
         $(function() {
-            table = $('.table').DataTable({
-                // processing: true,
-                // responsive: true,
-                // // lengthChange: false,
-                // autoWidth: false,
-                // // buttons: ["copy", "csv", "excel", "pdf", "print", "colvis"]
-                // ajax: {
-                //     url: '{{ route('supplier.data') }}'
-                // },
-                // columns: [{
-                //         data: 'DT_RowIndex',
-                //         searchable: false,
-                //         sortable: false
-                //     },
-                //     {
-                //         data: 'name'
-                //     },
-                //     {
-                //         data: 'address'
-                //     },
-                //     {
-                //         data: 'telephone'
-                //     },
-                //     {
-                //         data: 'action',
-                //         searchable: false,
-                //         sortable: false
-                //     },
-                // ]
+            table = $('.table-purchase').DataTable({
+                processing: true,
+                responsive: true,
+                // lengthChange: false,
+                autoWidth: false,
+                // buttons: ["copy", "csv", "excel", "pdf", "print", "colvis"]
+                ajax: {
+                    url: '{{ route('purchase.data') }}'
+                },
+                columns: [{
+                        data: 'DT_RowIndex',
+                        searchable: false,
+                        sortable: false
+                    },
+                    {
+                        data: 'date'
+                    },
+                    {
+                        data: 'supplier'
+                    },
+                    {
+                        data: 'total_item'
+                    },
+                    {
+                        data: 'total_price'
+                    },
+                    {
+                        data: 'discount'
+                    },
+                    {
+                        data: 'payment'
+                    },
+                    {
+                        data: 'action',
+                        searchable: false,
+                        sortable: false
+                    },
+                ]
             });
 
-
+            $('.table-supplier').DataTable();
+            table1 = $('.table-detail').DataTable({
+                processing: true,
+                bsort: false,
+                dom: 'Brt',
+                columns: [{
+                        data: 'DT_RowIndex',
+                        searchable: false,
+                        sortable: false
+                    },
+                    {
+                        data: 'code'
+                    },
+                    {
+                        data: 'name'
+                    },
+                    {
+                        data: 'purchase_price'
+                    },
+                    {
+                        data: 'amount'
+                    },
+                    {
+                        data: 'subtotal'
+                    },
+                ]
+            });
         })
 
         function addForm() {
             $('#modal-supplier').modal('show');
-
         }
 
-        function editForm(url) {
-            $('#modal-form').modal('show');
-            $('#modal-form .modal-title').text('Edit Supplier');
+        function showDetail(url) {
+            $('#modal-detail').modal('show');
 
-            $('#modal-form form')[0].reset();
-            $('#modal-form form').attr('action', url);
-            $('#modal-form [name=_method]').val('put');
-            $('#modal-form [name=name]').focus();
-
-            $.get(url).done((res) => {
-                $('#modal-form [name=name]').val(res.name);
-            }).fail((err) => {
-                alert('Cant show data!');
-                return;
-            })
+            table1.ajax.url(url);
+            table1.ajax.reload();
         }
 
         function deleteData(url) {

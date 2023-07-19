@@ -20,6 +20,35 @@ class PurchaseController extends Controller
         return view('purchase.index', compact('supplier'));
     }
 
+    public function data()
+    {
+        $purchase = Purchase::orderBy('id', 'desc')->get();
+
+        return datatables()
+            ->of($purchase)
+            ->addIndexColumn()
+            ->addColumn('total_price', function ($purchase) {
+                return 'Rp. ' . format_uang($purchase->total_price);
+            })
+            ->addColumn('payment', function ($purchase) {
+                return 'Rp. ' . format_uang($purchase->payment);
+            })
+            ->addColumn('date', function ($purchase) {
+                return tanggal_indonesia($purchase->created_at, false);
+            })
+            ->addColumn('supplier', function ($purchase) {
+                return $purchase->supplier->name;
+            })
+            ->addColumn('action', function ($purchase) {
+                return '
+                <button type="button" onclick="showDetail(`' . route('purchase.show', $purchase->id) . '`)" class="btn btn-warning btn-sm"><i class="fas fa-eye"></i></button>
+                <button type="button" onclick="deleteData(`' . route('purchase.destroy', $purchase->id) . '`)" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button>
+                ';
+            })
+            ->rawColumns(['action'])
+            ->make(true);
+    }
+
     /**
      * Show the form for creating a new resource.
      */
@@ -67,7 +96,28 @@ class PurchaseController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $detail = Purchase_detail::with('product')->where('purchase_id', $id)->get();
+
+        return datatables()
+            ->of($detail)
+            ->addIndexColumn()
+            ->addColumn('code', function ($detail) {
+                return '<span class="badge badge-secondary">' . $detail->product->code . '</span>';
+            })
+            ->addColumn('name', function ($detail) {
+                return $detail->product->name;
+            })
+            ->addColumn('purchase_price', function ($detail) {
+                return 'Rp. ' . format_uang($detail->purchase_price);
+            })
+            ->addColumn('amount', function ($detail) {
+                return format_uang($detail->amount);
+            })
+            ->addColumn('subtotal', function ($detail) {
+                return 'Rp. ' . format_uang($detail->subtotal);
+            })
+            ->rawColumns(['code'])
+            ->make(true);
     }
 
     /**
@@ -91,6 +141,13 @@ class PurchaseController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $purchase = Purchase::find($id);
+        $detail = Purchase_detail::where('id', $purchase->id)->get();
+        foreach ($detail as $item) {
+            $item->delete();
+        }
+        $purchase->delete();
+
+        return response(null, 204);
     }
 }

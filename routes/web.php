@@ -52,8 +52,8 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::get('/expenditure/data', [ExpenditureController::class, 'data'])->name('expenditure.data');
     Route::resource('expenditure', ExpenditureController::class);
-
-    // Route::get('/supplier/data', [SupplierController::class, 'data'])->name('supplier.data');
+    
+    Route::get('/purchase/data', [PurchaseController::class, 'data'])->name('purchase.data');
     Route::get('/purchase/{id}/create', [PurchaseController::class, 'create'])->name('purchase.create');
     Route::resource('purchase', PurchaseController::class)->except('create');
 
