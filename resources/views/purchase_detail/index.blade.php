@@ -93,8 +93,8 @@
 
                 <div class="row mt-3">
                     <div class="col-lg-8">
-                        <div class="show-pay bg-info">Rp. 100.000</div>
-                        <div class="show-counted">Rp. Seratus Ribu Rupiah</div>
+                        <div class="show-pay bg-info"></div>
+                        <div class="show-counted"></div>
                     </div>
                     <div class="col lg-4">
                         <form action="{{ route('purchase.store') }}" class="form-purchase" method="post">
@@ -107,20 +107,20 @@
                             <div class="form-group row">
                                 <label class="col-lg-2 control-label">Total</label>
                                 <div class="col-lg-8">
-                                    <input type="text" name="totalrp" id="totalrp" class="form-control" readonly>
+                                    <input type="text" id="totalrp" class="form-control" readonly>
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <label class="col-lg-2 control-label">Discount</label>
                                 <div class="col-lg-8">
-                                    <input type="text" name="discount" id="discount" class="form-control"
+                                    <input type="number" name="discount" id="discount" class="form-control"
                                         value="0">
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <label class="col-lg-2 control-label">Pay</label>
                                 <div class="col-lg-8">
-                                    <input type="text" name="pay" id="pay" class="form-control">
+                                    <input type="text" id="payrp" class="form-control">
                                 </div>
                             </div>
                         </form>
@@ -222,6 +222,18 @@
                         return;
                     })
             })
+
+            $(document).on('input', '#discount', function() {
+                if ($(this).val() == "") {
+                    $(this).val(0).select();
+                }
+
+                loadForm($(this).val());
+            })
+
+            $('.btn-save').on('click', function() {
+                $('.form-purchase').submit();
+            })
         })
 
         function showProduct() {
@@ -269,13 +281,17 @@
             $('#total').val($('.total').text());
             $('#total_item').val($('.total_item').text());
 
-            $.get(`{{ url('/purchase_detail/loadForm') }}/${discount}/${$('.total').text()}`)
-            .done((res) => {
-                
-            }).fail((err) => {
-                alert('unable to display data!')
-                return;
-            })
+            $.get(`{{ url('/purchase_detail/loadform/') }}/${discount}/${$('.total').text()}`)
+                .done(res => {
+                    $('#totalrp').val('Rp. ' + res.totalrp)
+                    $('#payrp').val('Rp. ' + res.payrp)
+                    $('#pay').val(res.pay)
+                    $('.show-pay').text('Rp. ' + res.payrp)
+                    $('.show-counted').text('Rp. ' + res.terbilang)
+                }).fail(err => {
+                    alert('unable to display data!');
+                    return;
+                })
         }
     </script>
 @endpush

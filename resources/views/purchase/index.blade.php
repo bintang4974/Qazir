@@ -12,8 +12,11 @@
     <div class="container-fluid">
         <div class="card">
             <div class="card-header">
-                <button onclick="addForm()" class="btn btn-primary btn-sm"><i
-                        class="fas fa-plus"></i> New Transaction</button>
+                <button onclick="addForm()" class="btn btn-primary btn-sm"><i class="fas fa-plus"></i> New Transaction</button>
+                @empty(!session('id_purchase'))
+                    <a href="{{ route('purchase_detail.index') }}" class="btn btn-info btn-sm"><i class="fas fa-plus"></i>
+                        Transaction Active</a>
+                @endempty
             </div>
             <!-- /.card-header -->
             <div class="card-body">
@@ -80,7 +83,7 @@
                 // ]
             });
 
-            
+
         })
 
         function addForm() {

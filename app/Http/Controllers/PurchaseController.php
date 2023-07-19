@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Product;
 use App\Models\Purchase;
+use App\Models\Purchase_detail;
 use App\Models\Supplier;
 use Illuminate\Http\Request;
 
@@ -42,7 +44,22 @@ class PurchaseController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // return $request->all();
+        $purchase = Purchase::findOrFail($request->id_purchase);
+        $purchase->total_item = $request->total_item;
+        $purchase->total_price = $request->total;
+        $purchase->payment = $request->pay;
+        $purchase->discount = $request->discount;
+        $purchase->update();
+
+        $detail = Purchase_detail::where('purchase_id', $purchase->id)->get();
+        foreach ($detail as $item) {
+            $product = Product::find($item->product_id);
+            $product->stock += $item->amount;
+            $product->update();
+        }
+
+        return redirect()->route('purchase.index');
     }
 
     /**
