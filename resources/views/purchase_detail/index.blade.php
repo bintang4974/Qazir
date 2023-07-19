@@ -3,6 +3,33 @@
     Purchase Transaction
 @endsection
 
+@push('css')
+    <style>
+        .show-pay {
+            font-size: 5em;
+            text-align: center;
+            height: 100px;
+        }
+
+        .show-counted {
+            padding: 10px;
+            background: #f0f0f0;
+        }
+
+        .table-purchase tbody tr:last-child {
+            display: none;
+        }
+
+        @media(max-width:768px) {
+            .show-pay {
+                font-size: 3em;
+                height: 70px;
+                padding-top: 5px;
+            }
+        }
+    </style>
+@endpush
+
 @section('breadcrumb')
     @parent
     <li class="breadcrumb-item active">Purchase Transaction</li>
@@ -57,15 +84,53 @@
                             <th>Code</th>
                             <th>Name</th>
                             <th>Price</th>
-                            <th>Amount</th>
+                            <th width="10%">Amount</th>
                             <th>Subtotal</th>
                             <th><i class="fas fa-cog"></i></th>
                         </tr>
                     </thead>
-                    <tbody>
-
-                    </tbody>
                 </table>
+
+                <div class="row mt-3">
+                    <div class="col-lg-8">
+                        <div class="show-pay bg-info">Rp. 100.000</div>
+                        <div class="show-counted">Rp. Seratus Ribu Rupiah</div>
+                    </div>
+                    <div class="col lg-4">
+                        <form action="{{ route('purchase.store') }}" class="form-purchase" method="post">
+                            @csrf
+                            <input type="hidden" name="id_purchase" value="{{ $id_purchase }}">
+                            <input type="hidden" name="total" id="total">
+                            <input type="hidden" name="total_item" id="total_item">
+                            <input type="hidden" name="pay" id="pay">
+
+                            <div class="form-group row">
+                                <label class="col-lg-2 control-label">Total</label>
+                                <div class="col-lg-8">
+                                    <input type="text" name="totalrp" id="totalrp" class="form-control" readonly>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-lg-2 control-label">Discount</label>
+                                <div class="col-lg-8">
+                                    <input type="text" name="discount" id="discount" class="form-control"
+                                        value="0">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-lg-2 control-label">Pay</label>
+                                <div class="col-lg-8">
+                                    <input type="text" name="pay" id="pay" class="form-control">
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="box-footer">
+                    <button type="submit" class="btn btn-primary btn-sm float-right btn-save"><i class="fas fa-save"></i>
+                        Save Transaction</button>
+                </div>
             </div>
             <!-- /.card-body -->
         </div>
@@ -82,43 +147,81 @@
 
         $(function() {
             table = $('.table-purchase').DataTable({
-                processing: true,
-                responsive: true,
-                // lengthChange: false,
-                autoWidth: false,
-                // buttons: ["copy", "csv", "excel", "pdf", "print", "colvis"]
-                ajax: {
-                    url: '{{ route('purchase_detail.data', $id_purchase) }}'
-                },
-                columns: [{
-                        data: 'DT_RowIndex',
-                        searchable: false,
-                        sortable: false
+                    processing: true,
+                    responsive: true,
+                    // lengthChange: false,
+                    autoWidth: false,
+                    // buttons: ["copy", "csv", "excel", "pdf", "print", "colvis"]
+                    buttons: false,
+                    ajax: {
+                        url: '{{ route('purchase_detail.data', $id_purchase) }}'
                     },
-                    {
-                        data: 'code_product'
-                    },
-                    {
-                        data: 'name_product'
-                    },
-                    {
-                        data: 'purchase_price'
-                    },
-                    {
-                        data: 'amount'
-                    },
-                    {
-                        data: 'subtotal'
-                    },
-                    {
-                        data: 'action',
-                        searchable: false,
-                        sortable: false
-                    },
-                ]
-            });
+                    columns: [{
+                            data: 'DT_RowIndex',
+                            searchable: false,
+                            sortable: false
+                        },
+                        {
+                            data: 'code_product'
+                        },
+                        {
+                            data: 'name_product'
+                        },
+                        {
+                            data: 'purchase_price'
+                        },
+                        {
+                            data: 'amount'
+                        },
+                        {
+                            data: 'subtotal'
+                        },
+                        {
+                            data: 'action',
+                            searchable: false,
+                            sortable: false
+                        },
+                    ],
+                    dom: 'Brt',
+                    bSort: false
+                })
+                .on('draw.dt', function() {
+                    loadForm($('#discount').val());
+                });
 
             table2 = $('.table-product').DataTable();
+
+            $(document).on('input', '.quantity', function() {
+                // console.log($(this).val());
+                let id = $(this).data('id');
+                let amount = parseInt($(this).val());
+
+                if (amount < 1) {
+                    $(this).val(1);
+                    alert('the amount cant be less than 1');
+                    return;
+                }
+
+                if (amount > 10000) {
+                    $(this).val(10000);
+                    alert('the amount cant be more than 10000');
+                    return;
+                }
+
+                $.post(`{{ url('/purchase_detail') }}/${id}`, {
+                        '_token': $('[name=csrf-token]').attr('content'),
+                        '_method': 'put',
+                        'amount': amount
+                    })
+                    .done((res) => {
+                        $(this).on('mouseout', function() {
+                            table.ajax.reload();
+                        })
+                    }).fail((err) => {
+                        alert('cant store data!');
+                        return;
+                    })
+            })
         })
 
         function showProduct() {
@@ -160,6 +263,19 @@
                     return;
                 })
             }
+        }
+
+        function loadForm(discount = 0) {
+            $('#total').val($('.total').text());
+            $('#total_item').val($('.total_item').text());
+
+            $.get(`{{ url('/purchase_detail/loadForm') }}/${discount}/${$('.total').text()}`)
+            .done((res) => {
+                
+            }).fail((err) => {
+                alert('unable to display data!')
+                return;
+            })
         }
     </script>
 @endpush

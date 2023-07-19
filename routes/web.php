@@ -58,5 +58,6 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('purchase', PurchaseController::class)->except('create');
 
     Route::get('/purchase_detail/{id}/data', [PurchaseDetailController::class, 'data'])->name('purchase_detail.data');
+    Route::get('/purchase_detail/loadform/{discount}/{total}', [PurchaseDetailController::class, 'loadForm'])->name('purchase_detail.load_form');
     Route::resource('purchase_detail', PurchaseDetailController::class)->except('create', 'show', 'edit');
 });

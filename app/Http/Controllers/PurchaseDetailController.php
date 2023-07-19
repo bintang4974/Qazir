@@ -26,28 +26,36 @@ class PurchaseDetailController extends Controller
     public function data($id)
     {
         $detail = Purchase_detail::with('product')->where('purchase_id', $id)->get();
+        $data = array();
+        $total = 0;
+        $total_item = 0;
+
+        foreach ($detail as $item) {
+            $row = array();
+            $row['code_product'] = '<span class="badge badge-secondary">' . $item->product['code'] . '</span>';
+            $row['name_product'] = $item->product['name'];
+            $row['purchase_price'] = 'Rp. ' . format_uang($item->purchase_price);
+            $row['amount'] = '<input type="number" class="form-control form-control-sm quantity" data-id="' . $item->id . '" value="' . $item->amount . '">';
+            $row['subtotal'] = 'Rp. ' . format_uang($item->subtotal);
+            $row['action'] = '<button type="button" onclick="deleteData(`' . route('purchase_detail.destroy', $item->id) . '`)" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button>';
+            $data[] = $row;
+
+            $total += $item->purchase_price * $item->amount;
+            $total_item += $item->amount;
+        }
+        $data[] = [
+            'code_product' => '<div class="total hide">' . $total . '</div> <div class="total_item hide">' . $total_item . '</div>',
+            'name_product' => '',
+            'purchase_price' => '',
+            'amount' => '',
+            'subtotal' => '',
+            'action' => '',
+        ];
 
         return datatables()
-            ->of($detail)
+            ->of($data)
             ->addIndexColumn()
-            ->addColumn('name_product',  function ($detail) {
-                return $detail->product['name'];
-            })
-            ->addColumn('code_product',  function ($detail) {
-                return '<span class="badge badge-secondary">' . $detail->product['code'] . '</span>';
-            })
-            ->addColumn('purchase_price',  function ($detail) {
-                return 'Rp. ' . $detail->purchase_price;
-            })
-            ->addColumn('subtotal',  function ($detail) {
-                return 'Rp. ' . $detail->subtotal;
-            })
-            ->addColumn('action', function ($detail) {
-                return '
-                <button type="button" onclick="deleteData(`' . route('purchase_detail.destroy', $detail->id) . '`)" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button>
-                ';
-            })
-            ->rawColumns(['action', 'code_product', 'purchase_price', 'subtotal'])
+            ->rawColumns(['action', 'code_product', 'purchase_price', 'amount', 'subtotal'])
             ->make(true);
     }
 
@@ -75,5 +83,26 @@ class PurchaseDetailController extends Controller
         $detail->delete();
 
         return response(null, 204);
+    }
+
+    public function update(Request $request, $id)
+    {
+        $detail = Purchase_detail::find($id);
+        $detail->amount = $request->amount;
+        $detail->subtotal = $detail->purchase_price * $request->amount;
+        $detail->update();
+    }
+
+    public function loadForm($discount, $total)
+    {
+        $pay = $total - ($discount / 100 * $total);
+        $data = [
+            'totalrp' => format_uang($total),
+            'pay' => $pay,
+            'payrp' => format_uang($pay),
+            'terbilang' => ucwords(terbilang($pay) . ' Rupiah')
+        ];
+
+        return response()->json($data);
     }
 }
