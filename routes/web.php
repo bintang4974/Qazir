@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ExpenditureController;
+use App\Http\Controllers\LandingController;
 use App\Http\Controllers\MemberController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\PurchaseController;
@@ -23,6 +24,8 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return redirect()->route('login');
 });
+
+Route::get('/landing', [LandingController::class])->name('landing');
 
 Route::middleware([
     'auth:sanctum',
@@ -52,7 +55,7 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::get('/expenditure/data', [ExpenditureController::class, 'data'])->name('expenditure.data');
     Route::resource('expenditure', ExpenditureController::class);
-    
+
     Route::get('/purchase/data', [PurchaseController::class, 'data'])->name('purchase.data');
     Route::get('/purchase/{id}/create', [PurchaseController::class, 'create'])->name('purchase.create');
     Route::resource('purchase', PurchaseController::class)->except('create');
