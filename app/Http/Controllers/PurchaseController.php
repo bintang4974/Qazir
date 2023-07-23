@@ -39,6 +39,9 @@ class PurchaseController extends Controller
             ->addColumn('supplier', function ($purchase) {
                 return $purchase->supplier->name;
             })
+            ->editColumn('discount', function ($purchase) {
+                return $purchase->discount . '%';
+            })
             ->addColumn('action', function ($purchase) {
                 return '
                 <button type="button" onclick="showDetail(`' . route('purchase.show', $purchase->id) . '`)" class="btn btn-warning btn-sm"><i class="fas fa-eye"></i></button>

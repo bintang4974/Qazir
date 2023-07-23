@@ -114,7 +114,7 @@
                                 <label class="col-lg-2 control-label">Discount</label>
                                 <div class="col-lg-8">
                                     <input type="number" name="discount" id="discount" class="form-control"
-                                        value="0">
+                                        value="{{ $discount }}">
                                 </div>
                             </div>
                             <div class="form-group row">

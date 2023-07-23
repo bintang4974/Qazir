@@ -22,6 +22,9 @@ class ExpenditureController extends Controller
         return datatables()
             ->of($expenditure)
             ->addIndexColumn()
+            ->addColumn('nominal', function ($expenditure) {
+                return 'Rp. ' . format_uang($expenditure->nominal);
+            })
             ->addColumn('action', function ($expenditure) {
                 return '
                 <button type="button" onclick="editForm(`' . route('expenditure.update', $expenditure->id) . '`)" class="btn btn-warning btn-sm"><i class="fas fa-edit"></i></button>
