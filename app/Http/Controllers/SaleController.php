@@ -11,7 +11,42 @@ class SaleController extends Controller
 {
     public function index()
     {
-        return "OK";
+        return view('sale.index');
+    }
+
+    public function data()
+    {
+        $sale = Sale::orderBy('id', 'desc')->get();
+
+        return datatables()
+            ->of($sale)
+            ->addIndexColumn()
+            ->addColumn('total_price', function ($sale) {
+                return 'Rp. ' . format_uang($sale->total_price);
+            })
+            ->addColumn('payment', function ($sale) {
+                return 'Rp. ' . format_uang($sale->payment);
+            })
+            ->addColumn('date', function ($sale) {
+                return tanggal_indonesia($sale->created_at, false);
+            })
+            ->addColumn('member_code', function ($sale) {
+                return '<span class="badge badge-secondary">' . $sale->member->code ?? '' . '</span>';
+            })
+            ->editColumn('discount', function ($sale) {
+                return $sale->discount . '%';
+            })
+            ->editColumn('cashier', function ($sale) {
+                return $sale->user->name ?? '';
+            })
+            ->addColumn('action', function ($sale) {
+                return '
+                <button type="button" onclick="showDetail(`' . route('sale.show', $sale->id) . '`)" class="btn btn-warning btn-sm"><i class="fas fa-eye"></i></button>
+                <button type="button" onclick="deleteData(`' . route('sale.destroy', $sale->id) . '`)" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button>
+                ';
+            })
+            ->rawColumns(['action', 'member_code'])
+            ->make(true);
     }
 
     public function create()
@@ -50,5 +85,43 @@ class SaleController extends Controller
         }
 
         return redirect()->route('sale.index');
+    }
+
+    public function show(string $id)
+    {
+        $detail = Sale_detail::with('product')->where('sale_id', $id)->get();
+
+        return datatables()
+            ->of($detail)
+            ->addIndexColumn()
+            ->addColumn('code', function ($detail) {
+                return '<span class="badge badge-secondary">' . $detail->product->code . '</span>';
+            })
+            ->addColumn('name', function ($detail) {
+                return $detail->product->name;
+            })
+            ->addColumn('selling_price', function ($detail) {
+                return 'Rp. ' . format_uang($detail->selling_price);
+            })
+            ->addColumn('amount', function ($detail) {
+                return format_uang($detail->amount);
+            })
+            ->addColumn('subtotal', function ($detail) {
+                return 'Rp. ' . format_uang($detail->subtotal);
+            })
+            ->rawColumns(['code'])
+            ->make(true);
+    }
+
+    public function destroy(string $id)
+    {
+        $sale = Sale::find($id);
+        $detail = Sale_detail::where('id', $sale->id)->get();
+        foreach ($detail as $item) {
+            $item->delete();
+        }
+        $sale->delete();
+
+        return response(null, 204);
     }
 }

@@ -66,6 +66,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/sale/data', [SaleController::class, 'data'])->name('sale.data');
     Route::get('sale', [SaleController::class, 'index'])->name('sale.index');
     Route::get('sale/{id}', [SaleController::class, 'show'])->name('sale.show');
+    Route::delete('sale/{id}', [SaleController::class, 'destroy'])->name('sale.destroy');
 
     Route::get('/transaction/new', [SaleController::class, 'create'])->name('transaction.new');
     Route::post('/transaction/save', [SaleController::class, 'store'])->name('transaction.save');
