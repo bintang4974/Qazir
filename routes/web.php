@@ -6,6 +6,8 @@ use App\Http\Controllers\MemberController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\PurchaseDetailController;
+use App\Http\Controllers\SaleController;
+use App\Http\Controllers\SaleDetailController;
 use App\Http\Controllers\SupplierController;
 use Illuminate\Support\Facades\Route;
 
@@ -52,7 +54,7 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::get('/expenditure/data', [ExpenditureController::class, 'data'])->name('expenditure.data');
     Route::resource('expenditure', ExpenditureController::class);
-    
+
     Route::get('/purchase/data', [PurchaseController::class, 'data'])->name('purchase.data');
     Route::get('/purchase/{id}/create', [PurchaseController::class, 'create'])->name('purchase.create');
     Route::resource('purchase', PurchaseController::class)->except('create');
@@ -60,4 +62,9 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/purchase_detail/{id}/data', [PurchaseDetailController::class, 'data'])->name('purchase_detail.data');
     Route::get('/purchase_detail/loadform/{discount}/{total}', [PurchaseDetailController::class, 'loadForm'])->name('purchase_detail.load_form');
     Route::resource('purchase_detail', PurchaseDetailController::class)->except('create', 'show', 'edit');
+
+    Route::get('/transaction/new', [SaleController::class, 'create'])->name('transaction.new');
+    Route::get('/transaction/{id}/data', [SaleDetailController::class, 'data'])->name('transaction.data');
+    Route::get('/transaction/loadform/{discount}/{total}/{accepted}', [SaleDetailController::class, 'loadForm'])->name('transaction.load_form');
+    Route::resource('transaction', SaleDetailController::class)->except('show');
 });

@@ -113,13 +113,13 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="pages/charts/inline.html" class="nav-link">
+                            <a href="{{ route('transaction.index') }}" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Old Transaction</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="pages/charts/uplot.html" class="nav-link">
+                            <a href="{{ route('transaction.new') }}" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>New Transaction</p>
                             </a>

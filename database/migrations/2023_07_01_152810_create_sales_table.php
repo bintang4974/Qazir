@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('sales', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('member_id')->constrained();
+            $table->integer('member_id')->nullable();
             $table->integer('total_item');
             $table->integer('total_price');
             $table->integer('discount')->default(0);
