@@ -1,6 +1,6 @@
 @extends('layouts.master')
 @section('title')
-    Purchase Transaction
+    Sales Transaction
 @endsection
 
 @push('css')
@@ -32,7 +32,7 @@
 
 @section('breadcrumb')
     @parent
-    <li class="breadcrumb-item active">Purchase Transaction</li>
+    <li class="breadcrumb-item active">Sales Transaction</li>
 @endsection
 
 @section('content')
@@ -83,13 +83,13 @@
                         <div class="show-counted"></div>
                     </div>
                     <div class="col lg-4">
-                        <form action="{{ route('purchase.store') }}" class="form-purchase" method="post">
+                        <form action="{{ route('transaction.save') }}" class="form-sale" method="post">
                             @csrf
                             <input type="hidden" name="id_sale" value="{{ $id_sale }}">
                             <input type="hidden" name="total" id="total">
                             <input type="hidden" name="total_item" id="total_item">
                             <input type="hidden" name="pay" id="pay">
-                            <input type="hidden" name="id_member" id="id_member">
+                            <input type="hidden" name="id_member" id="id_member" value="{{ $memberSelected->id }}">
 
                             <div class="form-group row">
                                 <label class="col-lg-2 control-label">Total</label>
@@ -101,7 +101,8 @@
                                 <label class="col-lg-2 control-label">Member</label>
                                 <div class="col-lg-8">
                                     <div class="input-group">
-                                        <input type="text" class="form-control" id="code_member">
+                                        <input type="text" class="form-control" id="code_member"
+                                            value="{{ $memberSelected->code }}">
                                         <div class="input-group-append">
                                             <button onclick="showMember()" class="btn btn-outline-info" type="button"
                                                 id="button-addon2"><i class="fas fa-arrow-right"></i></button>
@@ -112,8 +113,8 @@
                             <div class="form-group row">
                                 <label class="col-lg-2 control-label">Discount</label>
                                 <div class="col-lg-8">
-                                    <input type="number" name="discount" id="discount" class="form-control" value="0"
-                                        readonly>
+                                    <input type="number" name="discount" id="discount" class="form-control"
+                                        value="{{ !empty($memberSelected->id) ? $discount : 0 }}" readonly>
                                 </div>
                             </div>
                             <div class="form-group row">
@@ -126,7 +127,7 @@
                                 <label class="col-lg-2 control-label">Received</label>
                                 <div class="col-lg-8">
                                     <input type="text" id="accepted" name="accepted" class="form-control"
-                                        value="0">
+                                        value="{{ $sale->accepted ?? 0 }}">
                                 </div>
                             </div>
                             <div class="form-group row">
@@ -205,6 +206,9 @@
                 })
                 .on('draw.dt', function() {
                     loadForm($('#discount').val());
+                    setTimeout(() => {
+                        $('#accepted').trigger('input');
+                    }, 300);
                 });
 
             table2 = $('.table-product').DataTable();
@@ -233,7 +237,7 @@
                     })
                     .done((res) => {
                         $(this).on('mouseout', function() {
-                            table.ajax.reload();
+                            table.ajax.reload(() => loadForm($('#discount').val()));
                         })
                     }).fail((err) => {
                         alert('cant store data!');
@@ -249,8 +253,19 @@
                 loadForm($(this).val());
             })
 
+            // jika received nya kosong / tidak di isi
+            $('#accepted').on('input', function() {
+                if ($(this).val() == "") {
+                    $(this).val(0).select();
+                }
+
+                loadForm($('#discount').val(), $(this).val());
+            }).focus(function() {
+                $(this).select();
+            })
+
             $('.btn-save').on('click', function() {
-                $('.form-purchase').submit();
+                $('.form-sale').submit();
             })
         })
 
@@ -273,7 +288,7 @@
             $.post('{{ route('transaction.store') }}', $('.form-product').serialize())
                 .done((res) => {
                     $('#product_code').focus();
-                    table.ajax.reload()
+                    table.ajax.reload(() => loadForm($('#discount').val()));
                 }).fail((err) => {
                     console.log('err: ', err);
                     alert('cant store data!');
@@ -304,7 +319,7 @@
                     '_token': $('[name=csrf-token]').attr('content'),
                     '_method': 'delete'
                 }).done((res) => {
-                    table.ajax.reload()
+                    table.ajax.reload(() => loadForm($('#discount').val()));
                 }).fail((err) => {
                     alert('Cant delete data!');
                     return;
@@ -312,17 +327,23 @@
             }
         }
 
-        function loadForm(discount = 0) {
+        function loadForm(discount = 0, accepted = 0) {
             $('#total').val($('.total').text());
             $('#total_item').val($('.total_item').text());
 
-            $.get(`{{ url('/transaction/loadform/') }}/${discount}/${$('.total').text()}/${0}`)
+            $.get(`{{ url('/transaction/loadform/') }}/${discount}/${$('.total').text()}/${accepted}`)
                 .done(res => {
                     $('#totalrp').val('Rp. ' + res.totalrp)
                     $('#payrp').val('Rp. ' + res.payrp)
                     $('#pay').val(res.pay)
-                    $('.show-pay').text('Rp. ' + res.payrp)
-                    $('.show-counted').text('Rp. ' + res.terbilang)
+                    $('.show-pay').text('Pay: Rp. ' + res.payrp)
+                    $('.show-counted').text(res.terbilang)
+
+                    $('#money_changes').val('Rp. ' + res.money_changes);
+                    if ($('#accepted').val() != 0) {
+                        $('.show-pay').text('Kembali: Rp. ' + res.money_changes)
+                        $('.show-counted').text(res.kembali_terbilang)
+                    }
                 }).fail(err => {
                     alert('unable to display data!');
                     return;

@@ -2,11 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Product;
 use App\Models\Sale;
+use App\Models\Sale_detail;
 use Illuminate\Http\Request;
 
 class SaleController extends Controller
 {
+    public function index()
+    {
+        return "OK";
+    }
+
     public function create()
     {
         $sale = new Sale;
@@ -22,5 +29,26 @@ class SaleController extends Controller
         // create session dengan id sale
         session(['id_sale' => $sale->id]);
         return redirect()->route('transaction.index');
+    }
+
+    public function store(Request $request)
+    {
+        $sale = Sale::findOrFail($request->id_sale);
+        $sale->member_id = $request->id_member;
+        $sale->total_item = $request->total_item;
+        $sale->total_price = $request->total;
+        $sale->payment = $request->pay;
+        $sale->discount = $request->discount;
+        $sale->accepted = $request->accepted;
+        $sale->update();
+
+        $detail = Sale_detail::where('sale_id', $sale->id)->get();
+        foreach ($detail as $item) {
+            $product = Product::find($item->product_id);
+            $product->stock -= $item->amount;
+            $product->update();
+        }
+
+        return redirect()->route('sale.index');
     }
 }

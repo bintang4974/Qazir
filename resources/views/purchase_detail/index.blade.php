@@ -215,7 +215,9 @@
                     })
                     .done((res) => {
                         $(this).on('mouseout', function() {
-                            table.ajax.reload();
+                            table.ajax.reload(function() {
+                                loadForm($('#discount').val());
+                            });
                         })
                     }).fail((err) => {
                         alert('cant store data!');
@@ -255,7 +257,9 @@
             $.post('{{ route('purchase_detail.store') }}', $('.form-product').serialize())
                 .done((res) => {
                     $('#product_code').focus();
-                    table.ajax.reload()
+                    table.ajax.reload(function() {
+                        loadForm($('#discount').val());
+                    })
                 }).fail((err) => {
                     console.log('err: ', err);
                     alert('cant store data!');
@@ -269,7 +273,9 @@
                     '_token': $('[name=csrf-token]').attr('content'),
                     '_method': 'delete'
                 }).done((res) => {
-                    table.ajax.reload()
+                    table.ajax.reload(function() {
+                        loadForm($('#discount').val());
+                    })
                 }).fail((err) => {
                     alert('Cant delete data!');
                     return;
@@ -287,7 +293,7 @@
                     $('#payrp').val('Rp. ' + res.payrp)
                     $('#pay').val(res.pay)
                     $('.show-pay').text('Rp. ' + res.payrp)
-                    $('.show-counted').text('Rp. ' + res.terbilang)
+                    $('.show-counted').text(res.terbilang)
                 }).fail(err => {
                     alert('unable to display data!');
                     return;

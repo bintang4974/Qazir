@@ -19,7 +19,12 @@ class SaleDetailController extends Controller
 
         // cek apakah ada transaksi yang sedang berjalan
         if ($id_sale = session('id_sale')) {
-            return view('sale_detail.index', compact('product', 'member', 'discount', 'id_sale'));
+            // cari apakah ada pembayaran penjualan sebelumnya
+            $sale = Sale::find($id_sale);
+            // cari member apakah ada penjualan sebelumnya
+            $memberSelected = $sale->member ?? new Member;
+
+            return view('sale_detail.index', compact('product', 'member', 'discount', 'id_sale', 'sale', 'memberSelected'));
         } else {
             if (auth()->user()->level == 1) {
                 return redirect()->route('transaction.new');
@@ -86,6 +91,22 @@ class SaleDetailController extends Controller
         return response()->json('Data Create Successfully!', 200);
     }
 
+    public function update(Request $request, $id)
+    {
+        $detail = Sale_detail::find($id);
+        $detail->amount = $request->amount;
+        $detail->subtotal = $detail->selling_price * $request->amount;
+        $detail->update();
+    }
+
+    public function destroy(string $id)
+    {
+        $detail = Sale_detail::find($id);
+        $detail->delete();
+
+        return response(null, 204);
+    }
+
     public function loadForm($discount = 0, $total, $accepted)
     {
         $pay = $total - ($discount / 100 * $total);
@@ -95,7 +116,8 @@ class SaleDetailController extends Controller
             'pay' => $pay,
             'payrp' => format_uang($pay),
             'terbilang' => ucwords(terbilang($pay) . ' Rupiah'),
-            'money_changes' => format_uang($money_changes)
+            'money_changes' => format_uang($money_changes),
+            'kembali_terbilang' => ucwords(terbilang($money_changes) . ' Rupiah'),
         ];
 
         return response()->json($data);

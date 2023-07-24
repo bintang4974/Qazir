@@ -63,7 +63,12 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/purchase_detail/loadform/{discount}/{total}', [PurchaseDetailController::class, 'loadForm'])->name('purchase_detail.load_form');
     Route::resource('purchase_detail', PurchaseDetailController::class)->except('create', 'show', 'edit');
 
+    Route::get('/sale/data', [SaleController::class, 'data'])->name('sale.data');
+    Route::get('sale', [SaleController::class, 'index'])->name('sale.index');
+    Route::get('sale/{id}', [SaleController::class, 'show'])->name('sale.show');
+
     Route::get('/transaction/new', [SaleController::class, 'create'])->name('transaction.new');
+    Route::post('/transaction/save', [SaleController::class, 'store'])->name('transaction.save');
     Route::get('/transaction/{id}/data', [SaleDetailController::class, 'data'])->name('transaction.data');
     Route::get('/transaction/loadform/{discount}/{total}/{accepted}', [SaleDetailController::class, 'loadForm'])->name('transaction.load_form');
     Route::resource('transaction', SaleDetailController::class)->except('show');
