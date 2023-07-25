@@ -26,6 +26,10 @@ Route::get('/', function () {
     return redirect()->route('login');
 });
 
+Route::get('/landing', function () {
+    return view('land');
+});
+
 Route::middleware([
     'auth:sanctum',
     config('jetstream.auth_session'),
