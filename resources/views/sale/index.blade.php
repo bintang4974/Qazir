@@ -1,11 +1,11 @@
 @extends('layouts.master')
 @section('title')
-    Sale
+    List Sale
 @endsection
 
 @section('breadcrumb')
     @parent
-    <li class="breadcrumb-item active">Sale</li>
+    <li class="breadcrumb-item active">List Sale</li>
 @endsection
 
 @section('content')
@@ -27,9 +27,6 @@
                             <th><i class="fas fa-cog"></i></th>
                         </tr>
                     </thead>
-                    <tbody>
-
-                    </tbody>
                 </table>
             </div>
             <!-- /.card-body -->

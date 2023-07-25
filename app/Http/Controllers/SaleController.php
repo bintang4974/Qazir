@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Product;
 use App\Models\Sale;
 use App\Models\Sale_detail;
+use App\Models\Setting;
 use Illuminate\Http\Request;
 
 class SaleController extends Controller
@@ -84,7 +85,7 @@ class SaleController extends Controller
             $product->update();
         }
 
-        return redirect()->route('sale.index');
+        return redirect()->route('transaction.finish');
     }
 
     public function show(string $id)
@@ -123,5 +124,27 @@ class SaleController extends Controller
         $sale->delete();
 
         return response(null, 204);
+    }
+
+    public function finish()
+    {
+        $setting = Setting::first();
+
+        return view('sale.finish', compact('setting'));
+    }
+
+    public function smallNote()
+    {
+        $setting = Setting::first();
+        $sale = Sale::find(session('id_sale'));
+        if (!$sale) {
+            abort(404);
+        }
+        $detail = Sale_detail::with('product')->where('sale_id', session('id_sale'))->get();
+        return view('sale.small_note', compact('setting', 'sale', 'detail'));
+    }
+
+    public function bigNote()
+    {
     }
 }

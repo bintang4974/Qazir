@@ -70,6 +70,10 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::get('/transaction/new', [SaleController::class, 'create'])->name('transaction.new');
     Route::post('/transaction/save', [SaleController::class, 'store'])->name('transaction.save');
+    Route::get('/transaction/finish', [SaleController::class, 'finish'])->name('transaction.finish');
+    Route::get('/transaction/small-note', [SaleController::class, 'smallNote'])->name('transaction.small_note');
+    Route::get('/transaction/big-note', [SaleController::class, 'bigNote'])->name('transaction.big_note');
+
     Route::get('/transaction/{id}/data', [SaleDetailController::class, 'data'])->name('transaction.data');
     Route::get('/transaction/loadform/{discount}/{total}/{accepted}', [SaleDetailController::class, 'loadForm'])->name('transaction.load_form');
     Route::resource('transaction', SaleDetailController::class)->except('show');
