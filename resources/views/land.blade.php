@@ -91,11 +91,11 @@
                 <div class="row">
                     <div class="col-lg-6" data-aos="zoom-in">
                         <div class="content pt-4 pt-lg-0">
-                            <h3>Learn more about us</h3>
+                            <h3>Qazir</h3>
                             <p class="fst-italic">
-                                It is a long established fact that a reader will be distracted by the readable content
-                                of a page when
-                                looking at its layout. The point of using Lorem Ipsum is that....
+                                Kasir adalah orang yang bertanggung jawab untuk melayani pembayaran yang dilakukan pelanggan 
+                                dan memasukkan uang kedalam mesin kasir.  Pekerjaan ini biasanya dapat kamu jumpai di toko swalayan, minimarket, mall, 
+                                dan berbagai toko lainnya. Selain itu, kasir juga memfasilitasi transaksi yang dilakukan oleh pelanggan dengan bentuk pembayaran berupa uang tunai 
                             </p>
                             <!-- <ul>
                 <li><i class="bi bi-check-circle"></i> Ullamco laboris nisi ut aliquip ex ea commodo consequat.</li>
@@ -131,9 +131,9 @@
                     <div class="col-md-6 col-lg-3 d-flex align-items-stretch mb-5 mb-lg-0" data-aos="zoom-in">
                         <div class="icon-box icon-box-pink">
                             <img src="{{ asset('land/assets/img/ss1.png') }}" class="img-fluid" alt="">
-                            <h4 class="title"><a href="">Lorem Ipsum</a></h4>
-                            <p class="description">Voluptatum deleniti atque corrupti quos dolores et quas molestias
-                                excepturi sint occaecati cupiditate</p>
+                            <h4 class="title"><a href="">Penerimaan Pembayaran</a></h4>
+                            <p class="description">Kasir menerima pembayaran dari pelanggan yang ingin membeli barang atau jasa. Ini bisa berupa uang tunai, kartu kredit/debit, voucher, 
+                                atau metode pembayaran elektronik lainnya.</p>
                         </div>
                     </div>
 
@@ -141,9 +141,11 @@
                         data-aos-delay="100">
                         <div class="icon-box icon-box-cyan">
                             <img src="{{ asset('land/assets/img/ss2.png') }} " class="img-fluid" alt="">
-                            <h4 class="title"><a href="">Sed ut perspiciatis</a></h4>
-                            <p class="description">Duis aute irure dolor in reprehenderit in voluptate velit esse
-                                cillum dolore eu fugiat nulla</p>
+                            <h4 class="title"><a href="">Pengelolaan Uang Tunai</a></h4>
+                            <p class="description">Kasir bertanggung jawab atas pengelolaan uang tunai di kasir. Ini meliputi menjaga persediaan uang tunai, 
+                                memberikan kembalian dengan benar, dan mencatat transaksi secara akurat.
+
+                            </p>
                         </div>
                     </div>
 
@@ -151,9 +153,9 @@
                         data-aos-delay="200">
                         <div class="icon-box icon-box-green">
                             <img src="{{ asset('land/assets/img/ss3.png') }}" class="img-fluid" alt="">
-                            <h4 class="title"><a href="">Magni Dolores</a></h4>
-                            <p class="description">Excepteur sint occaecat cupidatat non proident, sunt in culpa qui
-                                officia deserunt mollit anim</p>
+                            <h4 class="title"><a href="">Perhitungan Harga</a></h4>
+                            <p class="description">Kasir menghitung jumlah total belanjaan pelanggan berdasarkan harga barang dan jumlah yang dibeli. 
+                                Mereka juga menerapkan diskon, pajak, atau biaya tambahan jika ada.</p>
                         </div>
                     </div>
                 </div>
@@ -252,7 +254,7 @@
 
                         <div class="col-lg-4 col-md-6 footer-newsletter">
                             <h3>Layanan</h3>
-                            <p>Tamen quem nulla quae legam multos aute sint culpa legam noster magna</p>
+                            <p>Qazir adalah apliaksi mempermudah penjualan anda!</p>
                             <form action="" method="post">
                                 <input type="email" name="email"><input type="submit" value="Subscribe">
                             </form>
