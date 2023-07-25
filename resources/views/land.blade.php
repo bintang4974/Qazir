@@ -75,7 +75,7 @@
                     </div>
                 </div>
                 <div class="col-lg-6 order-1 order-lg-2 hero-img" data-aos="fade-left" data-aos-delay="200">
-                    <img src="assets/img/hero-img.png" class="img-fluid animated" alt="">
+                    <img src="{{ asset('land/assets/img/hero-img.png') }}" class="img-fluid animated" alt="">
                 </div>
             </div>
         </div>
@@ -108,7 +108,7 @@
                         </div>
                     </div>
                     <div class="col-lg-6 d-flex flex-column justify-contents-center" data-aos="fade-left">
-                        <img src="assets/img/ebot.png" class="img-fluid" alt="">
+                        <img src="{{ asset('land/assets/img/ebot.png') }}" class="img-fluid" alt="">
                     </div>
                 </div>
 
@@ -130,7 +130,7 @@
                 <div class="justify-content-around d-flex mt-1">
                     <div class="col-md-6 col-lg-3 d-flex align-items-stretch mb-5 mb-lg-0" data-aos="zoom-in">
                         <div class="icon-box icon-box-pink">
-                            <img src="assets/img/Screenshot 2023-07-11 204301.png" class="img-fluid" alt="">
+                            <img src="{{ asset('land/assets/img/ss1.png') }}" class="img-fluid" alt="">
                             <h4 class="title"><a href="">Lorem Ipsum</a></h4>
                             <p class="description">Voluptatum deleniti atque corrupti quos dolores et quas molestias
                                 excepturi sint occaecati cupiditate</p>
@@ -140,7 +140,7 @@
                     <div class="col-md-6 col-lg-3 d-flex align-items-stretch mb-5 mb-lg-0" data-aos="zoom-in"
                         data-aos-delay="100">
                         <div class="icon-box icon-box-cyan">
-                            <img src="assets/img/Screenshot 2023-07-11 204340.png" class="img-fluid" alt="">
+                            <img src="{{ asset('land/assets/img/ss2.png') }} " class="img-fluid" alt="">
                             <h4 class="title"><a href="">Sed ut perspiciatis</a></h4>
                             <p class="description">Duis aute irure dolor in reprehenderit in voluptate velit esse
                                 cillum dolore eu fugiat nulla</p>
@@ -150,7 +150,7 @@
                     <div class="col-md-6 col-lg-3 d-flex align-items-stretch mb-5 mb-lg-0" data-aos="zoom-in"
                         data-aos-delay="200">
                         <div class="icon-box icon-box-green">
-                            <img src="assets/img/Screenshot 2023-07-11 204443.png" class="img-fluid" alt="">
+                            <img src="{{ asset('land/assets/img/ss3.png') }}" class="img-fluid" alt="">
                             <h4 class="title"><a href="">Magni Dolores</a></h4>
                             <p class="description">Excepteur sint occaecat cupidatat non proident, sunt in culpa qui
                                 officia deserunt mollit anim</p>
@@ -164,7 +164,7 @@
         <!-- ======= Features Section ======= -->
         <section id="stats" class="stats">
             <div class="justify-content-around d-flex">
-                <img src="assets/img/sponsor1.jpeg" alt="" data-aos="fade-in">
+                <img src="{{ asset('land/assets/img/sponsor1.jpeg') }}" alt="" data-aos="fade-in">
             </div>
             <div class="container position-relative" data-aos="fade-up" data-aos-delay="100">
 
@@ -172,25 +172,25 @@
 
                     <div class="col-lg-3 col-md-6">
                         <div class="stats-item text-center w-10 h-50">
-                            <img src="assets/img/1.png" class="img-fluid" alt="">
+                            <img src="{{ asset('land/assets/img/1.png') }}" class="img-fluid" alt="">
                         </div>
                     </div><!-- End Stats Item -->
 
                     <div class="col-lg-3 col-md-6">
                         <div class="stats-item text-center w-10 h-10">
-                            <img src="assets/img/2.png" class="img-fluid" alt="">
+                            <img src="{{ asset('land/assets/img/2.png') }}" class="img-fluid" alt="">
                         </div>
                     </div><!-- End Stats Item -->
 
                     <div class="col-lg-3 col-md-6">
                         <div class="stats-item text-center w-10 h-10">
-                            <img src="assets/img/5.png" class="img-fluid" alt="">
+                            <img src="{{ asset('land/assets/img/5.png') }}" class="img-fluid" alt="">
                         </div>
                     </div><!-- End Stats Item -->
 
                     <div class="col-lg-3 col-md-6">
                         <div class="stats-item text-center w-10 h-10">
-                            <img src="assets/img/4.png" class="img-fluid" alt="">
+                            <img src="{{ asset('land/assets/img/4.png') }}" class="img-fluid" alt="">
                         </div>
                     </div><!-- End Stats Item -->
 
@@ -290,7 +290,7 @@
     <script src="{{ asset('land/assets/vendor/php-email-form/validate.js') }}"></script>
 
     <!-- Template Main JS File -->
-    <script src="{{ asset('land/}assets/js/main.js') }"></script>
+    <script src="{{ asset('land/assets/js/main.js') }}"></script>
 
 </body>
 
