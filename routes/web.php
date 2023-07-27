@@ -6,6 +6,7 @@ use App\Http\Controllers\MemberController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\PurchaseDetailController;
+use App\Http\Controllers\ReportController;
 use App\Http\Controllers\SaleController;
 use App\Http\Controllers\SaleDetailController;
 use App\Http\Controllers\SupplierController;
@@ -81,4 +82,9 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/transaction/{id}/data', [SaleDetailController::class, 'data'])->name('transaction.data');
     Route::get('/transaction/loadform/{discount}/{total}/{accepted}', [SaleDetailController::class, 'loadForm'])->name('transaction.load_form');
     Route::resource('transaction', SaleDetailController::class)->except('show');
+
+    Route::get('/report', [ReportController::class, 'index'])->name('report.index');
+    Route::post('/report', [ReportController::class, 'refresh'])->name('report.refresh');
+    Route::get('/report/data/{begin}/{end}', [ReportController::class, 'data'])->name('report.data');
+    Route::get('/report/pdf/{begin}/{end}', [ReportController::class, 'exportPDF'])->name('report.export_pdf');
 });
