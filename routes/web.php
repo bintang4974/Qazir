@@ -10,6 +10,7 @@ use App\Http\Controllers\ReportController;
 use App\Http\Controllers\SaleController;
 use App\Http\Controllers\SaleDetailController;
 use App\Http\Controllers\SupplierController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -86,4 +87,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/report', [ReportController::class, 'index'])->name('report.index');
     Route::get('/report/data/{begin}/{end}', [ReportController::class, 'data'])->name('report.data');
     Route::get('/report/pdf/{begin}/{end}', [ReportController::class, 'exportPDF'])->name('report.export_pdf');
+
+    Route::get('/user/data', [UserController::class, 'data'])->name('user.data');
+    Route::resource('user', UserController::class);
 });
