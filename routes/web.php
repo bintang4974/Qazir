@@ -84,7 +84,6 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('transaction', SaleDetailController::class)->except('show');
 
     Route::get('/report', [ReportController::class, 'index'])->name('report.index');
-    Route::post('/report', [ReportController::class, 'refresh'])->name('report.refresh');
     Route::get('/report/data/{begin}/{end}', [ReportController::class, 'data'])->name('report.data');
     Route::get('/report/pdf/{begin}/{end}', [ReportController::class, 'exportPDF'])->name('report.export_pdf');
 });

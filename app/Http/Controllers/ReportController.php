@@ -9,17 +9,22 @@ use Illuminate\Http\Request;
 
 class ReportController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         $startDate = date('Y-m-d', mktime(0, 0, 0, date('m'), 1, date('Y')));
         $endDate = date('Y-m-d');
+
+        if ($request->has('start_date') && $request->start_date != "" && $request->has('end_date') && $request->end_date) {
+            $startDate = $request->start_date;
+            $endDate = $request->end_date;
+        }
 
         return view('report.index', compact('startDate', 'endDate'));
     }
 
     public function data($begin, $end)
     {
-        $no = 0;
+        $no = 1;
         $data = array();
         $income = 0;
         $total_income = 0;
@@ -36,6 +41,7 @@ class ReportController extends Controller
             $total_income += $income;
 
             $row = array();
+            $row['DT_RowIndex'] = $no++;
             $row['date'] = tanggal_indonesia($date, false);
             $row['sale'] = format_uang($total_sale);
             $row['purchase'] = format_uang($total_purchase);
@@ -46,6 +52,7 @@ class ReportController extends Controller
         }
 
         $data[] = [
+            'DT_RowIndex' => '',
             'date' => '',
             'sale' => '',
             'purchase' => '',
@@ -55,7 +62,14 @@ class ReportController extends Controller
 
         return datatables()
             ->of($data)
-            ->addIndexColumn()
             ->make(true);
+    }
+
+    public function refresh(Request $request)
+    {
+        $startDate = $request->start_date;
+        $endDate = $request->end_date;
+
+        return view('report.index', compact('startDate', 'endDate'));
     }
 }

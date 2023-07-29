@@ -85,22 +85,10 @@
                 format: 'YYYY-MM-DD',
                 autoclose: true
             });
-
-            $('#modal-form').validator().on('submit', function(e) {
-                if (!e.preventDefault()) {
-                    $.ajax({
-                        type: 'post',
-                        url: $('#modal-form form').attr('action'),
-                        data: $('#modal-form form').serialize()
-                    }).done((res) => {
-                        $('#modal-form').modal('hide');
-                        table.ajax.reload();
-                    }).fail((err) => {
-                        alert('cant store data!');
-                        return;
-                    })
-                }
-            })
+            $('#reservationdate2').datetimepicker({
+                format: 'YYYY-MM-DD',
+                autoclose: true
+            });
         })
 
         function updatePeriod() {
