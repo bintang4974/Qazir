@@ -14,8 +14,8 @@
             <div class="card-header">
                 <button onclick="updatePeriod()" class="btn btn-primary btn-sm"><i class="fas fa-plus"></i> Change
                     Period</button>
-                <a href="{{ route('report.export_pdf', [$startDate, $endDate]) }}" target="_blank"
-                    class="btn btn-info btn-sm"><i class="fas fa-plus"></i> Export PDF</a>
+                {{-- <a href="{{ route('report.export_pdf', [$startDate, $endDate]) }}" target="_blank"
+                    class="btn btn-info btn-sm"><i class="fas fa-plus"></i> Export PDF</a> --}}
             </div>
             <!-- /.card-header -->
             <div class="card-body">

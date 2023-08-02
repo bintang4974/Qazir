@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Expenditure;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
 {
@@ -49,7 +50,7 @@ class UserController extends Controller
         $user = new User;
         $user->name = $request->name;
         $user->email = $request->email;
-        $user->password = $request->password;
+        $user->password = bcrypt($request->password);
         $user->level = 2;
         $user->save();
 
@@ -83,7 +84,7 @@ class UserController extends Controller
         $user->name = $request->name;
         $user->email = $request->email;
         if ($request->has('password') && $request->password != "") {
-            $user->password = $request->password;
+            $user->password = bcrypt($request->password);
         }
         $user->update();
 
