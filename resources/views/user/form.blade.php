@@ -1,6 +1,6 @@
 <div class="modal fade" id="modal-form">
     <div class="modal-dialog">
-        <form action="" method="post" class="form-horizontal">
+        <form action="{{}}" method="post" class="form-horizontal" enctype="multipart/form-data">
             @csrf
             @method('post')
 

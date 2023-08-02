@@ -43,7 +43,7 @@ class DashboardController extends Controller
         if (auth()->user()->level == 1) {
             return view('admin.dashboard', compact('category', 'product', 'supplier', 'member', 'start_date', 'end_date', 'data_date', 'data_income'));
         } else {
-            return view('admin.dashboard');
+            return view('cashier.dashboard');
         }
     }
 }
